@@ -68,10 +68,13 @@ public class RobotContainer {
     m_chooser.addOption("tagfollower", tagfollower());
 
     SmartDashboard.putData(m_chooser);
+    
+
     // Configure default commands
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
+        
         new RunCommand(
             () -> m_robotDrive.drive(
                 -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
@@ -192,8 +195,9 @@ public Command blueauto() {
 private double rot;
   //this program follows apriltag
   public Command tagfollower() {
-    double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-
+   // double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+double tx = LimelightHelpers.getTX("");
+double ty= LimelightHelpers.getTY("");
     if (tx>5) {
     //turnright
     rot = -0.1;
@@ -205,13 +209,16 @@ private double rot;
     rot = 0;
 }
 SmartDashboard.putNumber("rot", rot);
-SmartDashboard.putNumber("tx", tx);
+SmartDashboard.putNumber("tx", LimelightHelpers.getTX(""));
+        SmartDashboard.putNumber("ty",LimelightHelpers.getTY(""));
+        SmartDashboard.updateValues();
+
     return new RunCommand(
             () -> m_robotDrive.drive(
                 0,
                 0,
                 rot,
                 true, true),
-            m_robotDrive);
+            m_robotDrive).andThen(() -> m_robotDrive.drive(0, 0, 0, false, false));
   }
 }
