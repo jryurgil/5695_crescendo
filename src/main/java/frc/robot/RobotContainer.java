@@ -31,8 +31,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.targetFollow;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -192,33 +194,14 @@ public Command blueauto() {
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false, false));
   }
-private double rot;
+
   //this program follows apriltag
   public Command tagfollower() {
    // double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-double tx = LimelightHelpers.getTX("");
-double ty= LimelightHelpers.getTY("");
-    if (tx>5) {
-    //turnright
-    rot = -0.1;
-}else if (tx<-5){
-    //turn left
-    rot = 0.1;
-}else{
-    //stay still
-    rot = 0;
-}
-SmartDashboard.putNumber("rot", rot);
-SmartDashboard.putNumber("tx", LimelightHelpers.getTX(""));
-        SmartDashboard.putNumber("ty",LimelightHelpers.getTY(""));
-        SmartDashboard.updateValues();
 
-    return new RunCommand(
-            () -> m_robotDrive.drive(
-                0,
-                0,
-                rot,
-                true, true),
-            m_robotDrive).andThen(() -> m_robotDrive.drive(0, 0, 0, false, false));
+    return new targetFollow(m_robotDrive);
   }
+
+
+  
 }
