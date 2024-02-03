@@ -22,22 +22,32 @@ public class targetFollow extends Command{
     @Override
     public void execute(){
             double tx = LimelightHelpers.getTX("");
-            double ty= LimelightHelpers.getTY("");
-            double rot;
-                if (tx>5) {
-                //turnright
-                rot = -0.1;
-            }else if (tx<-5){
-                //turn left
-                rot = 0.1;
-            }else{
-                //stay still
-                rot = 0;
-            }
-            driveSubsystem.drive(0, 0, rot, true, true);
+            double ty = LimelightHelpers.getTY("");
+            double ta = LimelightHelpers.getTA("");
+            boolean tv = LimelightHelpers.getTV("");
+            double[] targetpose =LimelightHelpers.getTargetPose_CameraSpace("");
+            //double targetangle = targetpose[5];
+            double rot = -tx/50;//25 is the limit view
+            double xSpeed = -(ta-6)/20;//ta=5 is the target, 0.2 is the speed limit
+            double ySpeed = targetpose[4]/200;//- move right
+            if (ta<5){ySpeed = 0;}
+            if (xSpeed>0.2) {xSpeed=0.2;}
+            else if (xSpeed<-0.2) {xSpeed=-0.2;}
+            if (!tv) {xSpeed = 0;rot = 0; ySpeed =0;}
+            
+            driveSubsystem.drive(xSpeed, ySpeed, rot, false, true);
             SmartDashboard.putNumber("tx", LimelightHelpers.getTX(""));
             SmartDashboard.putNumber("ty",LimelightHelpers.getTY(""));
             SmartDashboard.putNumber("rot",rot);
+            if(tv){
+            SmartDashboard.putNumber("targetpose0", targetpose[0]);
+            SmartDashboard.putNumber("targetpose1", targetpose[1]);
+            SmartDashboard.putNumber("targetpose2", targetpose[2]);
+            SmartDashboard.putNumber("targetpose3", targetpose[3]);
+            SmartDashboard.putNumber("targetpose4", targetpose[4]);
+            SmartDashboard.putNumber("targetpose5", targetpose[5]);
+            }
+
             SmartDashboard.updateValues();
               
 
