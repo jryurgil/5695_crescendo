@@ -34,12 +34,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.intakeExpel;
+import frc.robot.commands.intakeIn;
 import frc.robot.commands.targetFollow;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import java.util.List;
 
@@ -52,9 +56,9 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-
+  private final Intake robotintake = new Intake();
   // The driver's controller
-  XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
   //autonomous option chooser
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -99,10 +103,12 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(m_driverController, Button.kR1.value)
-        .whileTrue(new RunCommand(
+   
+            m_driverController.x().whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
+            m_driverController.rightBumper().whileTrue(new intakeIn(robotintake));
+            m_driverController.leftBumper().whileTrue(new intakeExpel(robotintake));
   }
 
   /**

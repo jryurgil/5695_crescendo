@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -18,12 +20,18 @@ import frc.robot.commands.intakeIn;
 public class Intake extends SubsystemBase {
 
   private final CANSparkMax m_intakeMotor;
+  private final CANSparkMax m_intakeLifter;
+  private SparkPIDController intakePID;
 DigitalInput notedetector;
   /** Creates a new ExampleSubsystem. */
   public Intake() {
 
-    m_intakeMotor = new CANSparkMax(20,MotorType.kBrushless);
+    m_intakeMotor = new CANSparkMax(2,MotorType.kBrushless);
+    m_intakeLifter = new CANSparkMax(1, MotorType.kBrushless);
     m_intakeMotor.getEncoder().setPosition(0);
+    m_intakeLifter.getEncoder().setPosition(0);
+    intakePID = m_intakeLifter.getPIDController();
+    intakePID.setReference(0, ControlType.kPosition);
 notedetector = new DigitalInput(0);
   }
 
@@ -34,12 +42,17 @@ notedetector = new DigitalInput(0);
    */
   public double intakePosition() {
     // Query some boolean state, such as a digital sensor.
-    return m_intakeMotor.getEncoder().getPosition();
+    return m_intakeLifter.getEncoder().getPosition();
   }
 
   public void setIntakeSpeed(double power){
     m_intakeMotor.set(power);
 
+  }
+
+  public void setIntakePosition(double position){
+
+    intakePID.setReference(position, ControlType.kPosition);
   }
 
   public boolean hasNote(){
@@ -51,7 +64,7 @@ notedetector = new DigitalInput(0);
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("intake encoder", m_intakeMotor.getEncoder().getPosition());
+    SmartDashboard.putNumber("intake encoder", m_intakeLifter.getEncoder().getPosition());
      SmartDashboard.putBoolean("note detector", notedetector.get());
   }
 
