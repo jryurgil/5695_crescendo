@@ -28,7 +28,7 @@ public class intakeIn extends Command {
   public void initialize() {
    
       //only start motor if there is no note
-      m_intake.setIntakeSpeed(0.1);
+      m_intake.setIntakeSpeed(1);
     
     
   }

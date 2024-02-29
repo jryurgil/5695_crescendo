@@ -26,7 +26,7 @@ public class intakeExpel extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.setIntakeSpeed(-0.1);
+    m_intake.setIntakeSpeed(-1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
