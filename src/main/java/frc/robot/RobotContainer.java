@@ -59,7 +59,7 @@ public class RobotContainer {
   private final Intake robotintake = new Intake();
   // The driver's controller
   CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
-
+  CommandXboxController m_driverController2 = new CommandXboxController(1);
   //autonomous option chooser
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -80,7 +80,7 @@ public class RobotContainer {
     
 
     // Configure default commands
-    m_robotDrive.setDefaultCommand(
+    /*m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
         
@@ -90,7 +90,7 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true, true),
-            m_robotDrive));
+            m_robotDrive));*/
   }
 
   /**
@@ -107,8 +107,10 @@ public class RobotContainer {
             m_driverController.x().whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
-            m_driverController.rightBumper().whileTrue(new intakeIn(robotintake));
-            m_driverController.leftBumper().whileTrue(new intakeExpel(robotintake));
+            m_driverController2.rightBumper().whileTrue(new intakeIn(robotintake));
+            m_driverController2.leftBumper().whileTrue(new intakeExpel(robotintake));
+            m_driverController2.povUp().whileTrue(new RunCommand(()-> robotintake.setIntakePosition(robotintake.intakePosition()-1), robotintake));
+             m_driverController2.povDown().whileTrue(new RunCommand(()-> robotintake.setIntakePosition(robotintake.intakePosition()+1), robotintake));
   }
 
   /**
