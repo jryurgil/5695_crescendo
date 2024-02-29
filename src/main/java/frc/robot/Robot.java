@@ -88,6 +88,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+//consider setting PID targets = actual here
+
   }
 
   /** This function is called periodically during operator control. */

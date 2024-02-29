@@ -37,6 +37,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.intakeExpel;
 import frc.robot.commands.intakeIn;
 import frc.robot.commands.targetFollow;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -57,6 +58,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final Intake robotintake = new Intake();
+  private final Arm robotarm = new Arm();
   // The driver's controller
   CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
   CommandXboxController m_driverController2 = new CommandXboxController(1);
@@ -109,8 +111,10 @@ public class RobotContainer {
             m_robotDrive));
             m_driverController2.rightBumper().whileTrue(new intakeIn(robotintake));
             m_driverController2.leftBumper().whileTrue(new intakeExpel(robotintake));
-            m_driverController2.povUp().whileTrue(new RunCommand(()-> robotintake.setIntakePosition(robotintake.intakePosition()-1), robotintake));
-             m_driverController2.povDown().whileTrue(new RunCommand(()-> robotintake.setIntakePosition(robotintake.intakePosition()+1), robotintake));
+            m_driverController2.povLeft().whileTrue(new RunCommand(()-> robotintake.setIntakePosition(robotintake.intakePosition()-1), robotintake));
+             m_driverController2.povRight().whileTrue(new RunCommand(()-> robotintake.setIntakePosition(robotintake.intakePosition()+1), robotintake));
+             m_driverController2.povUp().whileTrue(new RunCommand(()-> robotarm.setArmTarget(robotarm.armPosition()-1), robotarm));
+             m_driverController2.povDown().whileTrue(new RunCommand(()-> robotarm.setArmTarget(robotarm.armPosition()+1), robotarm));
   }
 
   /**

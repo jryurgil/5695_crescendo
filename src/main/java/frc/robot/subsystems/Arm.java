@@ -22,14 +22,14 @@ public class Arm extends SubsystemBase {
   private final CANSparkMax m_ArmMotor2;
   private SparkPIDController armPID;
   private ShuffleboardTab tab = Shuffleboard.getTab("SmartDashboard");
-  private GenericEntry newP = tab.add("newP", 0).getEntry();
-private GenericEntry target = tab.add("target", 0).getEntry();
+  private GenericEntry newP = tab.add("newarmP", 0).getEntry();
+//private GenericEntry target = tab.add("armtarget", 0).getEntry();
 
   /** Creates a new ExampleSubsystem. */
   public Arm() {
 
-    m_ArmMotor = new CANSparkMax(3,MotorType.kBrushless);
-     m_ArmMotor2 = new CANSparkMax(4,MotorType.kBrushless);
+    m_ArmMotor = new CANSparkMax(5,MotorType.kBrushless);
+     m_ArmMotor2 = new CANSparkMax(6,MotorType.kBrushless);
      m_ArmMotor2.follow(m_ArmMotor, true);
     m_ArmMotor.getEncoder().setPosition(0);
     armPID = m_ArmMotor.getPIDController();
@@ -71,7 +71,13 @@ private GenericEntry target = tab.add("target", 0).getEntry();
   }
 
 public void setArmTarget(double target){
+  if (target>0){
+    target=0;
+  }else if (target<-70){
+    target=-70;
+  }
 armPID.setReference(target,CANSparkBase.ControlType.kPosition);
+SmartDashboard.putNumber("arm target", target);
 }
 
   @Override
