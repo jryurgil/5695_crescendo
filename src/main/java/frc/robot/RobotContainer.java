@@ -84,17 +84,17 @@ public class RobotContainer {
     
 
     // Configure default commands
-    /*m_robotDrive.setDefaultCommand(
+    m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
         
         new RunCommand(
             () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
-                true, true),
-            m_robotDrive));*/
+                -MathUtil.applyDeadband(m_driverController.getLeftY()/2, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX()/2, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX()/2, OIConstants.kDriveDeadband),
+                false, true),
+            m_robotDrive));
   }
 
   /**
@@ -117,8 +117,8 @@ public class RobotContainer {
              m_driverController2.povRight().whileTrue(new RunCommand(()-> robotintake.setIntakePosition(robotintake.intakePosition()+1), robotintake));
              m_driverController2.povUp().whileTrue(new RunCommand(()-> robotarm.setArmTarget(robotarm.armPosition()-1), robotarm));
              m_driverController2.povDown().whileTrue(new RunCommand(()-> robotarm.setArmTarget(robotarm.armPosition()+1), robotarm));
-             m_driverController2.a().whileTrue(new RunCommand(()-> robotlifter.setLifterTarget(robotlifter.lifterPosition()+1),robotlifter));
-              m_driverController2.b().whileTrue(new RunCommand(()-> robotlifter.setLifterTarget(robotlifter.lifterPosition()-1),robotlifter));
+             //m_driverController2.a().whileTrue(new RunCommand(()-> robotlifter.setLifterTarget(robotlifter.lifterPosition()+1),robotlifter));
+             // m_driverController2.b().whileTrue(new RunCommand(()-> robotlifter.setLifterTarget(robotlifter.lifterPosition()-1),robotlifter));
   }
 
   /**

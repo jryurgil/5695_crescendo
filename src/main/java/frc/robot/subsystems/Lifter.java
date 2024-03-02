@@ -21,6 +21,7 @@ public class Lifter extends SubsystemBase {
   private final CANSparkMax m_ArmMotor;
   private final CANSparkMax m_ArmMotor2;
   private SparkPIDController armPID;
+   private SparkPIDController armPID2;
   private ShuffleboardTab tab = Shuffleboard.getTab("SmartDashboard");
   private GenericEntry newP = tab.add("newliftP", 0).getEntry();
 //private GenericEntry target = tab.add("armtarget", 0).getEntry();
@@ -28,12 +29,15 @@ public class Lifter extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public Lifter() {
 
-    m_ArmMotor = new CANSparkMax(20,MotorType.kBrushless);
-     m_ArmMotor2 = new CANSparkMax(21,MotorType.kBrushless);
-     m_ArmMotor2.follow(m_ArmMotor, true);
+    m_ArmMotor = new CANSparkMax(21,MotorType.kBrushless);
+     m_ArmMotor2 = new CANSparkMax(20,MotorType.kBrushless);
+    // m_ArmMotor2.follow(m_ArmMotor, true);
     m_ArmMotor.getEncoder().setPosition(0);
+     m_ArmMotor2.getEncoder().setPosition(0);
     armPID = m_ArmMotor.getPIDController();
     armPID.setReference(0,CANSparkBase.ControlType.kPosition);
+     armPID2 = m_ArmMotor2.getPIDController();
+    armPID2.setReference(0,CANSparkBase.ControlType.kPosition);
   }
 
   /**
@@ -77,6 +81,7 @@ public void setLifterTarget(double target){
     target=-70;
   } */
 armPID.setReference(target,CANSparkBase.ControlType.kPosition);
+armPID2.setReference(-target,CANSparkBase.ControlType.kPosition);
 SmartDashboard.putNumber("lift target", target);
 }
 
@@ -88,6 +93,7 @@ SmartDashboard.putNumber("lift target", target);
      SmartDashboard.putNumber("lift P",armPID.getP());
        SmartDashboard.putNumber("lift I",armPID.getI());
       armPID.setP(newP.getDouble(0));
+      armPID2.setP(newP.getDouble(0));
      // armPID.setReference(target.getDouble(0),CANSparkBase.ControlType.kPosition);
 
   }
