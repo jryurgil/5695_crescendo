@@ -34,6 +34,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.ArmtoAmp;
+import frc.robot.commands.ArmtoGround;
 import frc.robot.commands.intakeExpel;
 import frc.robot.commands.intakeIn;
 import frc.robot.commands.targetFollow;
@@ -47,6 +49,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 import java.util.List;
 
 /*
@@ -76,9 +80,10 @@ public class RobotContainer {
 
 
     //populating the autonomous option list
-    m_chooser.setDefaultOption("red", redauto());
+    m_chooser.setDefaultOption("forward", movementonly());
     m_chooser.addOption("blue", blueauto());
-    m_chooser.addOption("tagfollower", tagfollower());
+     m_chooser.addOption("red", redauto());
+    //m_chooser.addOption("tagfollower", tagfollower());
 
     SmartDashboard.putData(m_chooser);
     
@@ -117,8 +122,10 @@ public class RobotContainer {
              m_driverController2.povRight().whileTrue(new RunCommand(()-> robotintake.setIntakePosition(robotintake.intakePosition()+1), robotintake));
              m_driverController2.povUp().whileTrue(new RunCommand(()-> robotarm.setArmTarget(robotarm.armPosition()-1), robotarm));
              m_driverController2.povDown().whileTrue(new RunCommand(()-> robotarm.setArmTarget(robotarm.armPosition()+1), robotarm));
-             //m_driverController2.a().whileTrue(new RunCommand(()-> robotlifter.setLifterTarget(robotlifter.lifterPosition()+1),robotlifter));
-             // m_driverController2.b().whileTrue(new RunCommand(()-> robotlifter.setLifterTarget(robotlifter.lifterPosition()-1),robotlifter));
+             m_driverController2.a().whileTrue(new RunCommand(()-> robotlifter.setLifterTarget(robotlifter.lifterPosition()+1),robotlifter));
+             m_driverController2.b().whileTrue(new RunCommand(()-> robotlifter.setLifterTarget(robotlifter.lifterPosition()-1),robotlifter));
+            //new Trigger(m_driverController2.y()).onTrue(new ArmtoAmp(robotarm,robotintake));
+            //new Trigger(m_driverController2.x()).onTrue(new ArmtoGround(robotarm,robotintake));
   }
 
   /**
@@ -143,10 +150,10 @@ public class RobotContainer {
         // Start at the origin facing the +X direction
         new Pose2d(0, 0, new Rotation2d(0)),
         // Pass through these two interior waypoints, making an 's' curve path
-        List.of(new Translation2d(1, 0), new Translation2d(1.5, 0)),
+        List.of(new Translation2d(0, 0.3), new Translation2d(0, 0.6)),
         // End 3 meters straight ahead of where we started, facing forward
         //positive rotation is left turn
-        new Pose2d(2, 0, new Rotation2d(Math.PI/2)),
+        new Pose2d(0, 1, new Rotation2d(0)),
         config);
 
     var thetaController = new ProfiledPIDController(
@@ -185,10 +192,52 @@ public Command blueauto() {
         // Start at the origin facing the +X direction
         new Pose2d(0, 0, new Rotation2d(0)),
         // Pass through these two interior waypoints, making an 's' curve path
+        List.of(new Translation2d(0, -0.3), new Translation2d(0, -0.6)),
+        // End 3 meters straight ahead of where we started, facing forward
+        //positive rotation is left turn
+        new Pose2d(0, -1, new Rotation2d(0)),
+        config);
+
+    var thetaController = new ProfiledPIDController(
+        AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
+        exampleTrajectory,
+        m_robotDrive::getPose, // Functional interface to feed supplier
+        DriveConstants.kDriveKinematics,
+
+        // Position controllers
+        new PIDController(AutoConstants.kPXController, 0, 0),
+        new PIDController(AutoConstants.kPYController, 0, 0),
+        thetaController,
+        m_robotDrive::setModuleStates,
+        m_robotDrive);
+
+    // Reset odometry to the starting pose of the trajectory.
+    m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
+
+    // Run path following command, then stop at the end.
+    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false, false));
+  }
+
+  public Command movementonly() {
+    // Create config for trajectory
+    TrajectoryConfig config = new TrajectoryConfig(
+       1,
+        AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+        // Add kinematics to ensure max speed is actually obeyed
+        .setKinematics(DriveConstants.kDriveKinematics);
+
+    // An example trajectory to follow. All units in meters.
+    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+        // Start at the origin facing the +X direction
+        new Pose2d(0, 0, new Rotation2d(0)),
+        // Pass through these two interior waypoints, making an 's' curve path
         List.of(new Translation2d(1, 0), new Translation2d(1.5, 0)),
         // End 3 meters straight ahead of where we started, facing forward
         //positive rotation is left turn
-        new Pose2d(2, 0, new Rotation2d(-Math.PI/2)),
+        new Pose2d(2, 0, new Rotation2d(0)),
         config);
 
     var thetaController = new ProfiledPIDController(

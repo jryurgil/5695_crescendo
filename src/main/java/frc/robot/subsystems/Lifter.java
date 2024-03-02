@@ -29,8 +29,8 @@ public class Lifter extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public Lifter() {
 
-    m_ArmMotor = new CANSparkMax(21,MotorType.kBrushless);
-     m_ArmMotor2 = new CANSparkMax(20,MotorType.kBrushless);
+    m_ArmMotor = new CANSparkMax(20,MotorType.kBrushless);
+     m_ArmMotor2 = new CANSparkMax(21,MotorType.kBrushless);
     // m_ArmMotor2.follow(m_ArmMotor, true);
     m_ArmMotor.getEncoder().setPosition(0);
      m_ArmMotor2.getEncoder().setPosition(0);
@@ -81,7 +81,7 @@ public void setLifterTarget(double target){
     target=-70;
   } */
 armPID.setReference(target,CANSparkBase.ControlType.kPosition);
-armPID2.setReference(-target,CANSparkBase.ControlType.kPosition);
+armPID2.setReference(target,CANSparkBase.ControlType.kPosition);
 SmartDashboard.putNumber("lift target", target);
 }
 
