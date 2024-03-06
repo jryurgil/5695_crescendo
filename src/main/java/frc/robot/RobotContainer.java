@@ -98,7 +98,7 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_driverController.getLeftY()/2, OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getLeftX()/2, OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getRightX()/2, OIConstants.kDriveDeadband),
-                false, true),
+                true, true),
             m_robotDrive));
   }
 
@@ -122,11 +122,18 @@ public class RobotContainer {
              m_driverController2.povRight().whileTrue(new RunCommand(()-> robotintake.setIntakePosition(robotintake.intakePosition()+1), robotintake));
              m_driverController2.povUp().whileTrue(new RunCommand(()-> robotarm.setArmTarget(robotarm.armPosition()-1), robotarm));
              m_driverController2.povDown().whileTrue(new RunCommand(()-> robotarm.setArmTarget(robotarm.armPosition()+1), robotarm));
-             m_driverController2.a().whileTrue(new RunCommand(()-> robotlifter.setLifterTarget(robotlifter.lifterPosition()+1),robotlifter));
-             m_driverController2.b().whileTrue(new RunCommand(()-> robotlifter.setLifterTarget(robotlifter.lifterPosition()-1),robotlifter));
-            //new Trigger(m_driverController2.y()).onTrue(new ArmtoAmp(robotarm,robotintake));
-            //new Trigger(m_driverController2.x()).onTrue(new ArmtoGround(robotarm,robotintake));
+             m_driverController.a().whileTrue(new RunCommand(()-> robotlifter.setLifterTarget(robotlifter.lifterPosition()+1),robotlifter));
+             m_driverController.b().whileTrue(new RunCommand(()-> robotlifter.setLifterTarget(robotlifter.lifterPosition()-1),robotlifter));
+            new Trigger(m_driverController2.y()).onTrue(new ArmtoAmp(robotarm,robotintake));
+            new Trigger(m_driverController2.x()).onTrue(new ArmtoGround(robotarm,robotintake));
   }
+
+public void resetTargets(){
+    //reset the targets to match their current position
+    robotintake.setIntakePosition(robotintake.intakePosition());
+    robotarm.setArmTarget(robotarm.armPosition());
+    robotlifter.setLifterTarget(robotlifter.lifterPosition());
+}
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

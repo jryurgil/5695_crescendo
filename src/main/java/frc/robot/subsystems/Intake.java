@@ -25,8 +25,8 @@ public class Intake extends SubsystemBase {
   private final CANSparkMax m_intakeLifter;
   private SparkPIDController intakePID;
 DigitalInput notedetector;
-private ShuffleboardTab tab = Shuffleboard.getTab("Smart Dashboard");
-private GenericEntry newP = tab.add("newP", 0).getEntry();
+//private ShuffleboardTab tab = Shuffleboard.getTab("Smart Dashboard");
+//private GenericEntry newP = tab.add("newP", 0).getEntry();
 //private GenericEntry target = tab.add("target", 0).getEntry();
   /** Creates a new ExampleSubsystem. */
   public Intake() {
@@ -36,6 +36,7 @@ private GenericEntry newP = tab.add("newP", 0).getEntry();
     m_intakeMotor.getEncoder().setPosition(0);
     m_intakeLifter.getEncoder().setPosition(0);
     intakePID = m_intakeLifter.getPIDController();
+     intakePID.setP(0.5);
     intakePID.setReference(0, ControlType.kPosition);
 notedetector = new DigitalInput(0);
   }
@@ -78,7 +79,7 @@ if (position >40){
     SmartDashboard.putNumber("intake encoder", m_intakeLifter.getEncoder().getPosition());
    SmartDashboard.putNumber("intake P", intakePID.getP());
      SmartDashboard.putBoolean("note detector", notedetector.get());
-     intakePID.setP(newP.getDouble(0));
+     //intakePID.setP(newP.getDouble(0));
   }
 
   @Override

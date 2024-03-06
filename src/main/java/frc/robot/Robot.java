@@ -89,6 +89,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 //consider setting PID targets = actual here
+m_robotContainer.resetTargets();
 
   }
 
