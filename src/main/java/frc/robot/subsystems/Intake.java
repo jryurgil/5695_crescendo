@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -78,8 +79,9 @@ if (position >40){
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("intake encoder", m_intakeLifter.getEncoder().getPosition());
    SmartDashboard.putNumber("intake P", intakePID.getP());
-     SmartDashboard.putBoolean("note detector", notedetector.get());
+     SmartDashboard.putBoolean("note detector", m_intakeMotor.getReverseLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen).isPressed());
      //intakePID.setP(newP.getDouble(0));
+     
   }
 
   @Override
