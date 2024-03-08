@@ -21,6 +21,7 @@ public class Arm extends SubsystemBase {
   private final CANSparkMax m_ArmMotor;
   private final CANSparkMax m_ArmMotor2;
   private SparkPIDController armPID;
+
   //private ShuffleboardTab tab = Shuffleboard.getTab("SmartDashboard");
  // private GenericEntry newP = tab.add("newarmP", 0).getEntry();
 //private GenericEntry target = tab.add("armtarget", 0).getEntry();
@@ -37,21 +38,7 @@ public class Arm extends SubsystemBase {
     armPID.setReference(0,CANSparkBase.ControlType.kPosition);
   }
 
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
-  public Command exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-        });
-  }
-
-  /**
+   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
    *
    * @return value of some boolean subsystem state, such as a digital sensor.
@@ -81,6 +68,7 @@ armPID.setReference(target,CANSparkBase.ControlType.kPosition);
 SmartDashboard.putNumber("arm target", target);
 }
 
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -96,4 +84,5 @@ SmartDashboard.putNumber("arm target", target);
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
+
 }

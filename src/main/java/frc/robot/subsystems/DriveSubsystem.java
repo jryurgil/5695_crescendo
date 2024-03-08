@@ -84,7 +84,7 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearRight.getPosition()
         });
 
-         SmartDashboard.putNumber("pigeon angle", -m_gyro.getAngle());
+         SmartDashboard.putNumber("pigeon angle", m_gyro.getAngle());
   }
 
   /**
