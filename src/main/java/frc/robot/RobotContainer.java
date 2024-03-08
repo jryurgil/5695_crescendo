@@ -50,7 +50,7 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import java.util.List;
 
 /*
@@ -98,7 +98,7 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_driverController.getLeftY()/2, OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getLeftX()/2, OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getRightX()/2, OIConstants.kDriveDeadband),
-                true, true),
+                false, true),
             m_robotDrive));
   }
 
@@ -126,8 +126,9 @@ public class RobotContainer {
              m_driverController.b().whileTrue(new RunCommand(()-> robotlifter.setLifterTarget(robotlifter.lifterPosition()-1),robotlifter));
             new Trigger(m_driverController2.y()).onTrue(new ArmtoAmp(robotarm,robotintake));
             new Trigger(m_driverController2.x()).onTrue(new ArmtoGround(robotarm,robotintake));
+          
   }
-
+  
 public void resetTargets(){
     //reset the targets to match their current position
     robotintake.setIntakePosition(robotintake.intakePosition());

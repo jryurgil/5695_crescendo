@@ -37,9 +37,9 @@ DigitalInput notedetector;
     m_intakeMotor.getEncoder().setPosition(0);
     m_intakeLifter.getEncoder().setPosition(0);
     intakePID = m_intakeLifter.getPIDController();
-     intakePID.setP(0.5);
+     intakePID.setP(0.75);
     intakePID.setReference(0, ControlType.kPosition);
-notedetector = new DigitalInput(0);
+    notedetector = new DigitalInput(0);
   }
 
   /**
@@ -59,9 +59,9 @@ notedetector = new DigitalInput(0);
 //starting with the intake up as 0, the down position is positive 30
   public void setIntakePosition(double position){
 //check position for valid range
-if (position >40){
-  position =40;
-} else if (position<0){
+if (position <-35){
+  position =-35;
+} else if (position>0){
   position=0;
 }
     intakePID.setReference(position, ControlType.kPosition);
