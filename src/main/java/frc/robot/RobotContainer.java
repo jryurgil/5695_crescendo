@@ -37,6 +37,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.ArmtoAmp;
 import frc.robot.commands.ArmtoGround;
 import frc.robot.commands.intakeExpel;
+import frc.robot.commands.intakeExpeltimed;
 import frc.robot.commands.intakeIn;
 import frc.robot.commands.targetFollow;
 import frc.robot.commands.armRelease;
@@ -125,7 +126,7 @@ public class RobotContainer {
              m_driverController2.povDown().whileTrue(new RunCommand(()-> robotarm.setArmTarget(robotarm.armPosition()+1), robotarm));
              m_driverController.a().whileTrue(new RunCommand(()-> robotlifter.setLifterTarget(robotlifter.lifterPosition()+1),robotlifter));
              m_driverController.b().whileTrue(new RunCommand(()-> robotlifter.setLifterTarget(robotlifter.lifterPosition()-1),robotlifter));
-            //new Trigger(m_driverController2.y()).onTrue(new ArmtoAmp(robotarm,robotintake));
+            new Trigger(m_driverController2.y()).onTrue(new ArmtoAmp(robotarm,robotintake));
             //new Trigger(m_driverController2.x()).onTrue(new ArmtoGround(robotarm,robotintake));
           
   }
@@ -248,7 +249,7 @@ public Command blueauto() {
     m_robotDrive.resetOdometry(bluestarttoamp.getInitialPose());
 
     // Run path following command, then stop at the end.
-    return bluetoampcommand.andThen(new armRelease(robotlifter)).andThen(amptofieldcommand).andThen(() -> m_robotDrive.drive(0, 0, 0, false, false));
+    return bluetoampcommand.andThen(new armRelease(robotlifter)).andThen(new intakeExpeltimed(robotintake)).andThen(amptofieldcommand).andThen(() -> m_robotDrive.drive(0, 0, 0, false, false));
   }
 
   public Command movementonly() {
