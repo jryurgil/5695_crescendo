@@ -230,10 +230,7 @@ public Command blueauto() {
           //positive rotation is left turn
           config);
   
-      var thetaController = new ProfiledPIDController(
-          AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-      thetaController.enableContinuousInput(-Math.PI, Math.PI);
-  
+     
       SwerveControllerCommand amptofieldcommand = new SwerveControllerCommand(
           amptofield,
           m_robotDrive::getPose, // Functional interface to feed supplier
