@@ -39,6 +39,7 @@ import frc.robot.commands.ArmtoGround;
 import frc.robot.commands.intakeExpel;
 import frc.robot.commands.intakeIn;
 import frc.robot.commands.targetFollow;
+import frc.robot.commands.armRelease;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Intake;
@@ -247,7 +248,7 @@ public Command blueauto() {
     m_robotDrive.resetOdometry(bluestarttoamp.getInitialPose());
 
     // Run path following command, then stop at the end.
-    return bluetoampcommand.andThen(new armRelease(robotLifter)).andThen(amptofieldcommand).andThen(() -> m_robotDrive.drive(0, 0, 0, false, false));
+    return bluetoampcommand.andThen(new armRelease(robotlifter)).andThen(amptofieldcommand).andThen(() -> m_robotDrive.drive(0, 0, 0, false, false));
   }
 
   public Command movementonly() {
