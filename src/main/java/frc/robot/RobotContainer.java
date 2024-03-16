@@ -196,22 +196,21 @@ public Command blueauto() {
         .setKinematics(DriveConstants.kDriveKinematics);
 
     // An example trajectory to follow. All units in meters.
-    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+    Trajectory bluestarttoamp = TrajectoryGenerator.generateTrajectory(
         // Start at the origin facing the +X direction
-        new Pose2d(0, 0, new Rotation2d(0)),
+  
         // Pass through these two interior waypoints, making an 's' curve path
-        List.of(new Translation2d(0, -0.3), new Translation2d(0, -0.6)),
+        List.of(new Pose2d(0, 0, new Rotation2d(0)), new Pose2d(0.5, 0.45, new Rotation2d(0))),
         // End 3 meters straight ahead of where we started, facing forward
         //positive rotation is left turn
-        new Pose2d(0, -1, new Rotation2d(0)),
         config);
 
     var thetaController = new ProfiledPIDController(
         AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
-        exampleTrajectory,
+    SwerveControllerCommand bluetoampcommand = new SwerveControllerCommand(
+        bluestarttoamp,
         m_robotDrive::getPose, // Functional interface to feed supplier
         DriveConstants.kDriveKinematics,
 
@@ -222,11 +221,36 @@ public Command blueauto() {
         m_robotDrive::setModuleStates,
         m_robotDrive);
 
+        Trajectory amptofield = TrajectoryGenerator.generateTrajectory(
+          // Start at the origin facing the +X direction
+    
+          // Pass through these two interior waypoints, making an 's' curve path
+          List.of(new Pose2d(0, 0, new Rotation2d(0)), new Pose2d(0.5, -0.5, new Rotation2d(0))),
+          // End 3 meters straight ahead of where we started, facing forward
+          //positive rotation is left turn
+          config);
+  
+      var thetaController = new ProfiledPIDController(
+          AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
+      thetaController.enableContinuousInput(-Math.PI, Math.PI);
+  
+      SwerveControllerCommand amptofieldcommand = new SwerveControllerCommand(
+          amptofield,
+          m_robotDrive::getPose, // Functional interface to feed supplier
+          DriveConstants.kDriveKinematics,
+  
+          // Position controllers
+          new PIDController(AutoConstants.kPXController, 0, 0),
+          new PIDController(AutoConstants.kPYController, 0, 0),
+          thetaController,
+          m_robotDrive::setModuleStates,
+          m_robotDrive);
+          
     // Reset odometry to the starting pose of the trajectory.
-    m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
+    m_robotDrive.resetOdometry(bluestarttoamp.getInitialPose());
 
     // Run path following command, then stop at the end.
-    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false, false));
+    return bluetoampcommand.andThen(new armRelease(robotLifter)).andThen(amptofieldcommand).andThen(() -> m_robotDrive.drive(0, 0, 0, false, false));
   }
 
   public Command movementonly() {
