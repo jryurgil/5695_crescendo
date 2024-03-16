@@ -6,60 +6,46 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Lifter;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class ArmtoGround extends Command {
+public class armRelease extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final Arm m_arm;
-//private final Intake m_intake;
-private double armtarget;
-//private double intaketarget;
+  private final Lifter m_Lifter;
+  private final int RELEASETARGET = 10;
+
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmtoGround(Arm arm/* ,  Intake intake*/) {
-    m_arm = arm;
-   // m_intake = intake;
+  public armRelease(Lifter lifter) {
+    m_Lifter = lifter;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(arm);
-   // addRequirements (intake);
+    addRequirements(lifter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    armtarget = m_arm.armPosition();
-    //intaketarget = m_intake.intakePosition();
-    m_arm.setArmTarget (armtarget);
-    //m_intake.setIntakePosition (intaketarget);
+    m_Lifter.setLifterTarget (RELEASETARGET);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (armtarget <0){
-    armtarget = Math.max(0, armtarget-1);
   }
-  /* if (intaketarget <40){
-    intaketarget++;
-  } */
-  
-      m_arm.setArmTarget (armtarget);
-      //m_intake.setIntakePosition (intaketarget);
-    }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-   
+    
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (armtarget == 0 );
+    return m_Lifter.lifterPosition() == RELEASETARGET;
   }
 }
