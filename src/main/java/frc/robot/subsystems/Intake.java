@@ -41,6 +41,7 @@ DigitalInput notedetector;
     intakePID.setReference(0, ControlType.kPosition);
     notedetector = new DigitalInput(0);
     m_intakeLifter.setInverted(false);
+    m_intakeLifter.setSmartCurrentLimit(80);
 
   }
 
@@ -85,6 +86,7 @@ if (position < -40){
    SmartDashboard.putNumber("intake P", intakePID.getP());
      SmartDashboard.putBoolean("note detector", m_intakeMotor.getReverseLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen).isPressed());
      //intakePID.setP(newP.getDouble(0));
+     SmartDashboard.putNumber("wrist current", m_intakeLifter.getOutputCurrent());
      
   }
 
