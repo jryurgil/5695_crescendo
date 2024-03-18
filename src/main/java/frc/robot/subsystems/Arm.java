@@ -61,8 +61,8 @@ public class Arm extends SubsystemBase {
 public void setArmTarget(double target){
   if (target>0){
     target=0;
-  }else if (target<-50){
-    target=-50;
+  }else if (target<-45){
+    target=-45;
   }
 armPID.setReference(target,CANSparkBase.ControlType.kPosition);
 SmartDashboard.putNumber("arm target", target);

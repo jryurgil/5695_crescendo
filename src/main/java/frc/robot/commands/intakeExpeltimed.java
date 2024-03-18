@@ -4,62 +4,49 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class ArmtoGround extends Command {
+public class intakeExpeltimed extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final Arm m_arm;
-//private final Intake m_intake;
-private double armtarget;
-//private double intaketarget;
+  private final Intake m_intake;
+private final int runtime = 1;
+Timer commandTimer;
+private double starttime;
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmtoGround(Arm arm/* ,  Intake intake*/) {
-    m_arm = arm;
-   // m_intake = intake;
+  public intakeExpeltimed(Intake intake) {
+    m_intake = intake;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(arm);
-   // addRequirements (intake);
+    addRequirements(intake);
+    commandTimer = new Timer();
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    armtarget = m_arm.armPosition();
-    //intaketarget = m_intake.intakePosition();
-    m_arm.setArmTarget (armtarget);
-    //m_intake.setIntakePosition (intaketarget);
+    m_intake.setIntakeSpeed(0.5);
+    commandTimer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    if (armtarget <0){
-    armtarget = Math.max(0, armtarget-1);
-  }
-  /* if (intaketarget <40){
-    intaketarget++;
-  } */
-  
-      m_arm.setArmTarget (armtarget);
-      //m_intake.setIntakePosition (intaketarget);
-    }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-   
+    m_intake.setIntakeSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (armtarget == 0 );
+    return commandTimer.hasElapsed(runtime);
   }
 }
