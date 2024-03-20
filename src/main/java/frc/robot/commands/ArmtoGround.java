@@ -41,7 +41,7 @@ private double armtarget;
   @Override
   public void execute() {
     if (armtarget <0){
-    armtarget = Math.max(0, armtarget-1);
+    armtarget = Math.min(0, armtarget+1);
   }
   /* if (intaketarget <40){
     intaketarget++;
