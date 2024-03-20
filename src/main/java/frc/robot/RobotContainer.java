@@ -102,6 +102,9 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_driverController.getRightX()/2, OIConstants.kDriveDeadband),
                 false, true),
             m_robotDrive));
+
+            robotarm.setDefaultCommand(new RunCommand(()-> robotarm.setArmTarget(robotarm.armPosition()+m_driverController2.getRightY()), robotarm));
+            robotlifter.setDefaultCommand(new RunCommand(()-> robotlifter.setLifterTarget(robotlifter.lifterPosition()+m_driverController2.getLeftX()), robotlifter));
   }
 
   /**
