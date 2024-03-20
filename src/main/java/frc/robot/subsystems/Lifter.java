@@ -99,6 +99,8 @@ SmartDashboard.putNumber("lift target", target);
     /*   armPID.setP(newP.getDouble(0));
       armPID2.setP(newP.getDouble(0));*/
      // armPID.setReference(target.getDouble(0),CANSparkBase.ControlType.kPosition);
+     SmartDashboard.putNumber(" lifter current 2", m_ArmMotor2.getOutputCurrent());
+     SmartDashboard.putNumber("lifter current", m_ArmMotor.getOutputCurrent());
 
   }
 

@@ -79,7 +79,8 @@ SmartDashboard.putNumber("arm target", target);
        SmartDashboard.putNumber("arm I",armPID.getI());
       //armPID.setP(newP.getDouble(0));
      // armPID.setReference(target.getDouble(0),CANSparkBase.ControlType.kPosition);
-
+     SmartDashboard.putNumber("arm current", m_ArmMotor.getOutputCurrent());
+     SmartDashboard.putNumber("arm current 2", m_ArmMotor2.getOutputCurrent());
   }
 
   @Override
