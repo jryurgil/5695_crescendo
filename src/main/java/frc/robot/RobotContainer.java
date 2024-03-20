@@ -104,7 +104,7 @@ public class RobotContainer {
             m_robotDrive));
 
             robotarm.setDefaultCommand(new RunCommand(()-> robotarm.setArmTarget(robotarm.armPosition()+m_driverController2.getRightY()), robotarm));
-            robotlifter.setDefaultCommand(new RunCommand(()-> robotlifter.setLifterTarget(robotlifter.lifterPosition()+m_driverController2.getLeftX()), robotlifter));
+            robotintake.setDefaultCommand(new RunCommand(()-> robotintake.setIntakePosition(robotintake.intakePosition()+m_driverController2.getLeftX()), robotintake));
   }
 
   /**
