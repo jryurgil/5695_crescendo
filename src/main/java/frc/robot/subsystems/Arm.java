@@ -36,8 +36,8 @@ public class Arm extends SubsystemBase {
     armPID = m_ArmMotor.getPIDController();
     armPID.setP(0.5);
     armPID.setReference(0,CANSparkBase.ControlType.kPosition);
-    m_ArmMotor.setSmartCurrentLimit(80);
-    m_ArmMotor2.setSmartCurrentLimit(80);
+    m_ArmMotor.setSmartCurrentLimit(40);
+    m_ArmMotor2.setSmartCurrentLimit(40);
   }
 
    /**

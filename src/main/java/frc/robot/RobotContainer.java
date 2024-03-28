@@ -103,8 +103,8 @@ public class RobotContainer {
                 false, true),
             m_robotDrive));
 
-            robotarm.setDefaultCommand(new RunCommand(()-> robotarm.setArmTarget(robotarm.armPosition()+m_driverController2.getRightY()), robotarm));
-            robotintake.setDefaultCommand(new RunCommand(()-> robotintake.setIntakePosition(robotintake.intakePosition()+m_driverController2.getLeftX()), robotintake));
+            //robotarm.setDefaultCommand(new RunCommand(()-> robotarm.setArmTarget(robotarm.armPosition()+m_driverController2.getRightY()), robotarm));
+            //robotintake.setDefaultCommand(new RunCommand(()-> robotintake.setIntakePosition(robotintake.intakePosition()+m_driverController2.getLeftX()), robotintake));
   }
 
   /**
@@ -129,8 +129,8 @@ public class RobotContainer {
              m_driverController2.povDown().whileTrue(new RunCommand(()-> robotarm.setArmTarget(robotarm.armPosition()+1), robotarm));
              m_driverController.a().whileTrue(new RunCommand(()-> robotlifter.setLifterTarget(robotlifter.lifterPosition()+1),robotlifter));
              m_driverController.b().whileTrue(new RunCommand(()-> robotlifter.setLifterTarget(robotlifter.lifterPosition()-1),robotlifter));
-            new Trigger(m_driverController2.y()).onTrue(new ArmtoAmp(robotarm));
-            new Trigger(m_driverController2.x()).onTrue(new ArmtoGround(robotarm));
+            //new Trigger(m_driverController2.y()).onTrue(new ArmtoAmp(robotarm));
+            //new Trigger(m_driverController2.x()).onTrue(new ArmtoGround(robotarm));
           
   }
   

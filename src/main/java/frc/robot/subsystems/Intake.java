@@ -41,7 +41,7 @@ DigitalInput notedetector;
     intakePID.setReference(0, ControlType.kPosition);
     notedetector = new DigitalInput(0);
     m_intakeLifter.setInverted(false);
-    m_intakeLifter.setSmartCurrentLimit(80);
+    m_intakeLifter.setSmartCurrentLimit(40);
 
   }
 
@@ -62,13 +62,13 @@ DigitalInput notedetector;
 //starting with the intake up as 0, the down position is positive 30
   public void setIntakePosition(double position){
 //check position for valid range
-/*
-if (position < -40){
-  position = -40;
+
+if (position < -50){
+  position = -50;
 } else if (position>0){
   position=0;
 }
-*/
+
     intakePID.setReference(position, ControlType.kPosition);
     SmartDashboard.putNumber("intake target", position);
   }

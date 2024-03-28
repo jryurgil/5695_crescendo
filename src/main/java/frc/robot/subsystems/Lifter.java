@@ -40,8 +40,8 @@ public class Lifter extends SubsystemBase {
      armPID2 = m_ArmMotor2.getPIDController();
        armPID2.setP(0.5);
     armPID2.setReference(0,CANSparkBase.ControlType.kPosition);
-    m_ArmMotor.setSmartCurrentLimit(80);
-     m_ArmMotor2.setSmartCurrentLimit(80);
+    m_ArmMotor.setSmartCurrentLimit(40);
+     m_ArmMotor2.setSmartCurrentLimit(40);
   }
 
   /**
