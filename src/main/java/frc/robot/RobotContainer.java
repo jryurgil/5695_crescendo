@@ -97,14 +97,14 @@ public class RobotContainer {
         
         new RunCommand(
             () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY()/2, OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftY()*0.60, OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getLeftX()/2, OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getRightX()/2, OIConstants.kDriveDeadband),
                 false, true),
             m_robotDrive));
 
-            //robotarm.setDefaultCommand(new RunCommand(()-> robotarm.setArmTarget(robotarm.armPosition()+m_driverController2.getRightY()), robotarm));
-            //robotintake.setDefaultCommand(new RunCommand(()-> robotintake.setIntakePosition(robotintake.intakePosition()+m_driverController2.getLeftX()), robotintake));
+            robotarm.setDefaultCommand(new RunCommand(()-> robotarm.setArmTarget(robotarm.armPosition()+MathUtil.applyDeadband(m_driverController2.getRightY(),0.1)), robotarm));
+            robotintake.setDefaultCommand(new RunCommand(()-> robotintake.setIntakePosition(robotintake.intakePosition()+MathUtil.applyDeadband(m_driverController2.getLeftX(),0.1)), robotintake));
   }
 
   /**
@@ -127,6 +127,8 @@ public class RobotContainer {
              m_driverController2.povRight().whileTrue(new RunCommand(()-> robotintake.setIntakePosition(robotintake.intakePosition()+1), robotintake));
              m_driverController2.povUp().whileTrue(new RunCommand(()-> robotarm.setArmTarget(robotarm.armPosition()-1), robotarm));
              m_driverController2.povDown().whileTrue(new RunCommand(()-> robotarm.setArmTarget(robotarm.armPosition()+1), robotarm));
+             m_driverController2.povDownLeft().whileTrue(new RunCommand(()-> robotarm.setArmTarget(robotarm.armPosition()+1), robotarm));
+             m_driverController2.povDownRight().whileTrue(new RunCommand(()-> robotarm.setArmTarget(robotarm.armPosition()+1), robotarm));
              m_driverController.a().whileTrue(new RunCommand(()-> robotlifter.setLifterTarget(robotlifter.lifterPosition()+1),robotlifter));
              m_driverController.b().whileTrue(new RunCommand(()-> robotlifter.setLifterTarget(robotlifter.lifterPosition()-1),robotlifter));
             //new Trigger(m_driverController2.y()).onTrue(new ArmtoAmp(robotarm));

@@ -63,11 +63,11 @@ DigitalInput notedetector;
   public void setIntakePosition(double position){
 //check position for valid range
 
-if (position < -50){
+/* if (position < -50){
   position = -50;
 } else if (position>0){
   position=0;
-}
+} */
 
     intakePID.setReference(position, ControlType.kPosition);
     SmartDashboard.putNumber("intake target", position);
